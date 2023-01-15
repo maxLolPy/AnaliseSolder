@@ -1,0 +1,117 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:views="clr-namespace:AnaliseSolder.Views">
+    <DataTemplate DataType="{x:Type views:AttireVMwm}">
+        <DockPanel>
+            <ToolBar DockPanel.Dock="Top">
+                <Button Content="Назад" Command="{Binding GoBackCommand}" />
+                <Button Content="Сохранить" Command="{Binding AttireVM.SaveItemCommand}" />
+            </ToolBar>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="Дата проведения наряда" />
+                <TextBlock Grid.Row="1" Text="Военнослужащий" />
+                <TextBlock Grid.Row="2" Text="Место проведения наряда" />
+                <TextBlock Grid.Row="3" Text="Оперативный дежурный" />
+                <TextBlock Grid.Row="4" Text="Замечание" />
+
+                <DatePicker Grid.Column="1" Grid.Row="0" SelectedDate="{Binding AttireVM.DateAttire}" />
+                <Grid Grid.Column="1" Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox Text="{Binding SolderDescrFilter,Delay=1000, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <ComboBox Grid.Column="1"
+                              DisplayMemberPath="DescrForFind"
+                              SelectedItem="{Binding SolderVM}"
+                              SelectedValue="{Binding AttireVM.SolderId, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedValuePath="SolderId"
+                              ItemsSource="{Binding SolderListVMItems}">
+
+                        <!-- <ComboBox.ItemsPanel>  -->
+                        <!--     <ItemsPanelTemplate> -->
+                        <!--         <VirtualizingStackPanel /> -->
+                        <!--     </ItemsPanelTemplate> -->
+                        <!-- </ComboBox.ItemsPanel> -->
+                        <!-- <ComboBox.ItemTemplate> -->
+                        <!--     <DataTemplate> -->
+                        <!--         <TextBlock Text="{Binding DescrForFind}"/> -->
+                        <!--     </DataTemplate> -->
+                        <!-- </ComboBox.ItemTemplate> -->
+                    </ComboBox>
+                </Grid>
+                <Grid Grid.Column="1" Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox Text="{Binding PlaceDescrFilter,Delay=1000, UpdateSourceTrigger=PropertyChanged}" />
+                    <ComboBox Grid.Column="1"
+                              DisplayMemberPath="Descr"
+                              SelectedItem="{Binding PlaceVM}"
+                              SelectedValue="{Binding AttireVM.PlaceId, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedValuePath="PlaceId"
+                              ItemsSource="{Binding PlaceListVMItems}">
+                        <!-- <ComboBox.ItemsPanel> -->
+                        <!--     <ItemsPanelTemplate> -->
+                        <!--         <VirtualizingStackPanel /> -->
+                        <!--     </ItemsPanelTemplate> -->
+                        <!-- </ComboBox.ItemsPanel> -->
+                        <!-- <ComboBox.ItemTemplate> -->
+                        <!--     <DataTemplate> -->
+                        <!--         <TextBlock Text="{Binding Descr}"/> -->
+                        <!--     </DataTemplate> -->
+                        <!-- </ComboBox.ItemTemplate> -->
+                    </ComboBox>
+                </Grid>
+                <Grid Grid.Column="1" Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox Text="{Binding OficerDescrFilter,Delay=1000, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <ComboBox Grid.Column="1"
+                              DisplayMemberPath="DescrForFind"
+                              SelectedItem="{Binding ResponsibleVM}"
+                              SelectedValue="{Binding AttireVM.ResponsibleId, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedValuePath="SolderId"
+                              ItemsSource="{Binding OficerListVMItems}">
+                        <!-- <ComboBox.ItemsPanel> -->
+                        <!--     <ItemsPanelTemplate> -->
+                        <!--         <VirtualizingStackPanel /> -->
+                        <!--     </ItemsPanelTemplate> -->
+                        <!-- </ComboBox.ItemsPanel> -->
+                        <!-- <ComboBox.ItemTemplate> -->
+                        <!--     <DataTemplate> -->
+                        <!--         <TextBlock Text="{Binding DescrForFind}"/> -->
+                        <!--     </DataTemplate> -->
+                        <!-- </ComboBox.ItemTemplate> -->
+                    </ComboBox>
+                </Grid>
+                <TextBox Grid.Column="1" Grid.Row="4" Name="TextBoxDescr" Background="#b0ffb0" TextWrapping="Wrap"
+                         Text="{Binding AttireVM.Descr, UpdateSourceTrigger = PropertyChanged}" />
+                <CheckBox Grid.Column="1" Grid.Row="5" IsChecked="{Binding AttireVM.IsPositive}"
+                          Content="Положительное замечание" />
+            </Grid>
+        </DockPanel>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding AttireVM.IsPositive}" Value="False">
+                <Setter TargetName="TextBoxDescr" Property="Background" Value="#ffb0b0" />
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+</ResourceDictionary>

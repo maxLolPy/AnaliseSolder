@@ -1,0 +1,44 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Place="clr-namespace:AnaliseSolder.Views.Place"
+                    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+                    xmlns:wpfControls="clr-namespace:BaseObjectsMVVM.WpfControls;assembly=BaseObjectsMVVM">
+     <DataTemplate DataType="{x:Type Place:PlaceListVMwm}">
+         <DockPanel>
+            <ToolBar DockPanel.Dock="Top">
+                <Button Content="Назад" Command="{Binding GoBackCommand}"/>
+                <Button Content="Создать" Command="{Binding PlaceListVM.CreateItemCommand}"/>
+                <Button Content="Обновить" Command="{Binding PlaceListVM.UpdateCommand}"/>
+                <Button Content="Сохранить" Command="{Binding PlaceListVM.SaveCommand}"/>
+                <Button Content="Удалить" Command="{Binding PlaceListVM.DeleteSelectedItemCommand}"/>
+                <Separator/>
+                <xctk:DropDownButton Content="Объединить">
+                    <xctk:DropDownButton.DropDownContent>
+                            <StackPanel>
+                                <ComboBox ItemsSource="{Binding PlaceListVM.Items}"
+                                          SelectedValuePath="PlaceId"
+                                          DisplayMemberPath="Descr"
+                                          SelectedValue="{Binding PlaceListVM.ItemIdForGroup1}" />
+                                <ComboBox ItemsSource="{Binding PlaceListVM.Items}"
+                                          SelectedValuePath="PlaceId"
+                                          DisplayMemberPath="Descr"
+                                          SelectedValue="{Binding PlaceListVM.ItemIdForGroup2}" />
+                                <Button Content="Объединить" Command="{Binding PlaceListVM.GroupItemsCommand}"/>
+                            </StackPanel>
+                    </xctk:DropDownButton.DropDownContent>
+                </xctk:DropDownButton>
+            </ToolBar>
+             <wpfControls:DataGrid ItemsSource="{Binding PlaceListVM.Items}" 
+                                   AutoGenerateColumns="False"
+                                   IsReadOnly="False"
+                                   Name="DataGrid"
+                                   SelectedIndex="{Binding PlaceListVM.SelectedItemIndex}"
+                                   SelectedItem="{Binding PlaceListVM.SelectedItem}">
+            <DataGrid.Columns>
+                <DataGridTextColumn IsReadOnly="True" Binding="{Binding PlaceId}" Header="№"/>
+                <DataGridTextColumn Binding="{Binding Descr, UpdateSourceTrigger=PropertyChanged}" Header="Название"/>
+            </DataGrid.Columns>
+        </wpfControls:DataGrid>
+            </DockPanel>
+    </DataTemplate>
+</ResourceDictionary>

@@ -1,0 +1,73 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:analiseSolder="clr-namespace:AnaliseSolder"
+                    xmlns:attire="clr-namespace:AnaliseSolder.models.Attire"
+                    xmlns:wpfControls="clr-namespace:BaseObjectsMVVM.WpfControls;assembly=BaseObjectsMVVM"
+                    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit">
+    <DataTemplate DataType="{x:Type analiseSolder:MainPageVM}">
+        <DockPanel>
+            <ToolBar DockPanel.Dock="Top">
+                <Button Content="Создать" Command="{Binding CreateAttireCommand}"/>
+                <Button Content="Обновить" Command="{Binding AttireListVM.UpdateCommand}"/>
+                <Button Content="Удалить" Command="{Binding AttireListVM.DeleteSelectedItemCommand}"/>
+                <Separator/>
+                <Button Content="Военнослужащие" Command="{Binding OpenSoldersListCommnand}"/>
+                <Button Content="Звания" Command="{Binding OpenTitleListCommnand}"/>
+                <Button Content="Места несения службы" Command="{Binding OpenPlacesListCommnand}"/>
+                <Button Content="Подразделения" Command="{Binding OpenDivisionsListCommnand}"/>
+                <Separator/>
+                <!-- <Button Content="Отчёт 1" Command="{Binding Report1Command}"/> -->
+            </ToolBar>
+            <ToolBar DockPanel.Dock="Top">
+                <DatePicker VerticalAlignment="Bottom" SelectedDate="{Binding AttireListVM.StartDateFilter}" ToolTip="Дата с"/>
+                <DatePicker VerticalAlignment="Bottom" SelectedDate="{Binding AttireListVM.EndDateFilter}" ToolTip="Дата по"/>
+                <StackPanel>
+                    <TextBox Text="{Binding PlacesDescrFilter, UpdateSourceTrigger=PropertyChanged, Delay=700}"/>
+                    <xctk:CheckComboBox Width="150" ToolTip="Места несения службы" 
+                                        ItemsSource="{Binding PlaceListVMItemsWithFilter}" Delimiter="," 
+                                        ValueMemberPath="PlaceId"
+                                        SelectedValue="{ Binding AttireListVM.PlacesFilter }"
+                                        DisplayMemberPath="Descr"/>
+                </StackPanel>
+                <StackPanel>
+                    <TextBox Text="{Binding SoldersDescrFilter, UpdateSourceTrigger=PropertyChanged, Delay=700}"/>
+                <xctk:CheckComboBox Width="150" ToolTip="Курсанты" 
+                                        ItemsSource="{Binding SolderListVMItemsWithFilter}" Delimiter=","
+                                        ValueMemberPath="SolderId" 
+                                        SelectedValue="{ Binding AttireListVM.SoldersFilter }"
+                                        DisplayMemberPath="DescrForFind"/>
+                </StackPanel>
+            </ToolBar>
+        <wpfControls:DataGrid ItemsSource="{Binding AttireListVM.Items}" 
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True"
+                              SelectedItem="{Binding AttireListVM.SelectedItem}"
+                              DoubleClickCommand="{Binding AttireListVM.OpenItemCommand}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding AttireId}" Header="№ записи"/>
+                <DataGridTextColumn Binding="{Binding DateAttire, StringFormat='dd.MM.yyyy'}" Header="Дата записи"/>
+                <DataGridTextColumn Binding="{Binding SolderVM.Fio}" Header="ФИО"/>
+                <DataGridTextColumn Binding="{Binding SolderVM.TitleVM.ShortDescr}" Header="Звание"/>
+                <DataGridTextColumn Binding="{Binding SolderVM.DivisionVM.Name}" Header="Подразделение"/>
+                <DataGridTextColumn Binding="{Binding PlaceVM.Descr}" Header="Место несения службы"/>
+                <DataGridTemplateColumn Header="Замечание" Width="*" ClipboardContentBinding="{Binding DescrForCopy}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="attire:AttireVM">
+                            <TextBlock Name="CellText" Text="{Binding Descr}" 
+                                       TextWrapping="WrapWithOverflow"
+                                       Background="#b0ffb0"
+                                       Foreground="Black"/>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsPositive}" Value="False">
+                                    <Setter TargetName="CellText" Property="Background" Value="#ffb0b0"/>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Binding="{Binding ResponsibleVM.Fio}" Header="Ответственный офицер"/>
+            </DataGrid.Columns>
+        </wpfControls:DataGrid>
+            </DockPanel>
+    </DataTemplate>
+</ResourceDictionary>

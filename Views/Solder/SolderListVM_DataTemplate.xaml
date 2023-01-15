@@ -1,0 +1,105 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:views="clr-namespace:AnaliseSolder.Views.Solder"
+                    xmlns:Solders="clr-namespace:AnaliseSolder.Views.Solder"
+                    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+                    xmlns:wpfControls="clr-namespace:BaseObjectsMVVM.WpfControls;assembly=BaseObjectsMVVM"
+                    xmlns:attire="clr-namespace:AnaliseSolder.models.Attire">
+     <DataTemplate DataType="{x:Type Solders:SolderListVMwm}">
+         <DockPanel>
+            <ToolBar DockPanel.Dock="Top">
+                <Button Content="Назад" Command="{Binding GoBackCommand}"/>
+                <Button Content="Создать" Command="{Binding SolderListVM.CreateItemCommand}"/>
+                <Button Content="Обновить" Command="{Binding SolderListVM.UpdateCommand}"/>
+                <Button Content="Сохранить" Command="{Binding SolderListVM.SaveCommand}"/>
+                <Button Content="Удалить" Command="{Binding SolderListVM.DeleteSelectedItemCommand}"/>
+                <Separator/>
+                <xctk:DropDownButton Content="Объединить">
+                    <xctk:DropDownButton.DropDownContent>
+                            <StackPanel>
+                                <ComboBox IsEditable="True"
+                                          ToolTip="1й солдат"
+                                          IsTextSearchEnabled="True"
+                                          DisplayMemberPath="DescrForFind"
+                                          SelectedValuePath="SolderId"
+                                          SelectedValue="{Binding SolderListVM.ItemIdForGroup1, Mode=OneWayToSource}"
+                                          IsDropDownOpen="{Binding IsOpenSolder1Box}"
+                                          ItemsSource="{Binding Solder1ListVMItems}"
+                                          Text="{Binding Solder1DescrFilter, Delay=1000}">
+                                    <ComboBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <VirtualizingStackPanel />
+                                        </ItemsPanelTemplate>
+                                    </ComboBox.ItemsPanel>
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding DescrForFind}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <ComboBox IsEditable="True"
+                                          ToolTip="2й содлат, все записи этого солдата будут присвоены первому, после чего он будет удалён."
+                                          IsTextSearchEnabled="True"
+                                          SelectedValuePath="SolderId"
+                                          DisplayMemberPath="DescrForFind"
+                                          SelectedValue="{Binding SolderListVM.ItemIdForGroup2, Mode=OneWayToSource}"
+                                          IsDropDownOpen="{Binding IsOpenSolder2Box}"
+                                          ItemsSource="{Binding Solder2ListVMItems}"
+                                          Text="{Binding Solder2DescrFilter, Delay=1000}">
+                                    <ComboBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <VirtualizingStackPanel />
+                                        </ItemsPanelTemplate>
+                                    </ComboBox.ItemsPanel>
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding DescrForFind}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <Button Content="Объединить" Command="{Binding SolderListVM.GroupItemsCommand}"/>
+                            </StackPanel>
+                    </xctk:DropDownButton.DropDownContent>
+                </xctk:DropDownButton>
+            </ToolBar>
+            <ToolBar DockPanel.Dock="Top">
+                <!-- <xctk:CheckComboBox Width="150" ToolTip="Места несения службы"  -->
+                <!--                     ItemsSource="{Binding PlaceListVM.Items}" Delimiter=","  -->
+                <!--                     ValueMemberPath="PlaceId"  -->
+                <!--                     SelectedValue="{ Binding AttireListVM.PlacesFilter }" -->
+                <!--                     DisplayMemberPath="Descr"/> -->
+                <!-- <xctk:CheckComboBox Width="150" ToolTip="Курсанты"  -->
+                <!--                     ItemsSource="{Binding SolderListVM.Items}" Delimiter="," -->
+                <!--                     ValueMemberPath="SolderId"  -->
+                <!--                     SelectedValue="{ Binding AttireListVM.SoldersFilter }" -->
+                <!--                     DisplayMemberPath="DescrForFind"/> -->
+            </ToolBar>
+        <wpfControls:DataGrid ItemsSource="{Binding SolderListVM.Items}" 
+                              AutoGenerateColumns="False"
+                              IsReadOnly="False"
+                              Name="DataGrid"
+                              SelectedIndex="{Binding SolderListVM.SelectedItemIndex}"
+                              SelectedItem="{Binding SolderListVM.SelectedItem}">
+            <DataGrid.Columns>
+                <DataGridTextColumn  IsReadOnly="True" Binding="{Binding SolderId}" Header="№"/>
+                <DataGridTextColumn Binding="{Binding SecondName, UpdateSourceTrigger=PropertyChanged}" Header="Фамилия"/>
+                <DataGridTextColumn Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Header="Имя"/>
+                <DataGridTextColumn Binding="{Binding FatherName, UpdateSourceTrigger=PropertyChanged}" Header="Отчество"/>
+                <wpfControls:DataGridComboBoxColumnWithBindingHack
+                    ItemsSource="{Binding DataContext.DivisionListVM.Items, ElementName=DataGrid}"
+                    SelectedValuePath="IdDivision"
+                    DisplayMemberPath="Name"
+                    SelectedValueBinding="{Binding DivisionId,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Header="Подразделение" />
+                <DataGridCheckBoxColumn Binding="{Binding IsOficer, UpdateSourceTrigger=PropertyChanged}" Header="Может быть оперативным дежурным" />
+                <wpfControls:DataGridComboBoxColumnWithBindingHack
+                    ItemsSource="{Binding DataContext.TitleListVM.Items, ElementName=DataGrid}"
+                    SelectedValuePath="ItemId"
+                    DisplayMemberPath="Descr"
+                    SelectedValueBinding="{Binding TitleId,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Header="Звание" />
+            </DataGrid.Columns>
+        </wpfControls:DataGrid>
+            </DockPanel>
+    </DataTemplate>
+</ResourceDictionary>

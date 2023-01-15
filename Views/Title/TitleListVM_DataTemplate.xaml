@@ -1,0 +1,31 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Title="clr-namespace:AnaliseSolder.Views.Title"
+                    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+                    xmlns:wpfControls="clr-namespace:BaseObjectsMVVM.WpfControls;assembly=BaseObjectsMVVM">
+     <DataTemplate DataType="{x:Type Title:TitleListVMwm}">
+         <DockPanel>
+            <ToolBar DockPanel.Dock="Top">
+                <Button Content="Назад" Command="{Binding GoBackCommand}"/>
+                <Button Content="Создать" Command="{Binding TitleListVM.CreateItemCommand}"/>
+                <Button Content="Обновить" Command="{Binding TitleListVM.UpdateCommand}"/>
+                <Button Content="Сохранить" Command="{Binding TitleListVM.SaveCommand}"/>
+                <Button Content="Удалить" Command="{Binding TitleListVM.DeleteSelectedItemCommand}"/>
+
+                
+            </ToolBar>
+             <wpfControls:DataGrid ItemsSource="{Binding TitleListVM.Items}" 
+                                   AutoGenerateColumns="False"
+                                   IsReadOnly="False"
+                                   Name="DataGrid"
+                                   SelectedIndex="{Binding TitleListVM.SelectedItemIndex}"
+                                   SelectedItem="{Binding TitleListVM.SelectedItem}">
+            <DataGrid.Columns>
+                <DataGridTextColumn IsReadOnly="True" Binding="{Binding TitleId}" Header="№"/>
+                <DataGridTextColumn Binding="{Binding Descr, UpdateSourceTrigger=PropertyChanged}" Header="Полное наименование"/>
+                <DataGridTextColumn Binding="{Binding ShortDescr, UpdateSourceTrigger=PropertyChanged}" Header="Сокращение"/>
+            </DataGrid.Columns>
+        </wpfControls:DataGrid>
+            </DockPanel>
+    </DataTemplate>
+</ResourceDictionary>

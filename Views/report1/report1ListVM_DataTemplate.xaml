@@ -1,0 +1,24 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:wpfControls="clr-namespace:BaseObjectsMVVM.WpfControls;assembly=BaseObjectsMVVM"
+                    xmlns:report1="clr-namespace:AnaliseSolder.Views.Report1">
+     <DataTemplate DataType="{x:Type report1:Report1ListVMwm}">
+         <DockPanel>
+            <ToolBar DockPanel.Dock="Top">
+                <Button Content="Назад" Command="{Binding GoBackCommand}"/>
+                <Button Content="Обновить" Command="{Binding Report1ListVM.UpdateCommand}"/>
+                
+            </ToolBar>
+             <wpfControls:DataGrid ItemsSource="{Binding Items}" 
+                                   AutoGenerateColumns="False"
+                                   IsReadOnly="False"
+                                   Name="DataGrid">
+            <DataGrid.Columns>
+                <DataGridTextColumn IsReadOnly="True" Binding="{Binding }" Header="№"/>
+                <!-- <DataGridTextColumn Binding="{Binding Descr}" Header="Полное наименование"/> -->
+                <!-- <DataGridTextColumn Binding="{Binding ShortDescr}" Header="Сокращение"/> -->
+            </DataGrid.Columns>
+        </wpfControls:DataGrid>
+            </DockPanel>
+    </DataTemplate>
+</ResourceDictionary>

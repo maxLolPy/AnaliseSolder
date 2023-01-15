@@ -1,0 +1,27 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Division="clr-namespace:AnaliseSolder.Views.Division"
+                    xmlns:wpfControls="clr-namespace:BaseObjectsMVVM.WpfControls;assembly=BaseObjectsMVVM">
+     <DataTemplate DataType="{x:Type Division:DivisionListVMwm}">
+         <DockPanel>
+            <ToolBar DockPanel.Dock="Top">
+                <Button Content="Назад" Command="{Binding GoBackCommand}"/>
+                <Button Content="Создать" Command="{Binding DivisionListVM.CreateItemCommand}"/>
+                <Button Content="Обновить" Command="{Binding DivisionListVM.UpdateCommand}"/>
+                <Button Content="Сохранить" Command="{Binding DivisionListVM.SaveCommand}"/>
+                <Button Content="Удалить" Command="{Binding DivisionListVM.DeleteSelectedItemCommand}"/>
+            </ToolBar>
+             <wpfControls:DataGrid ItemsSource="{Binding DivisionListVM.Items}" 
+                                   AutoGenerateColumns="False"
+                                   IsReadOnly="False"
+                                   Name="DataGrid"
+                                   SelectedIndex="{Binding DivisionListVM.SelectedItemIndex}"
+                                   SelectedItem="{Binding DivisionListVM.SelectedItem}">
+            <DataGrid.Columns>
+                <DataGridTextColumn IsReadOnly="True" Binding="{Binding IdDivision}" Header="№"/>
+                <DataGridTextColumn Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Header="Полное наименование"/>
+            </DataGrid.Columns>
+        </wpfControls:DataGrid>
+            </DockPanel>
+    </DataTemplate>
+</ResourceDictionary>
